@@ -1,0 +1,14 @@
+[tool.ruff.lint]
+extend-ignore = [
+    "UP045",  # Optional[X] garde volontairement plutot que X | None, pour rester
+              # explicite et compatible avec toutes les versions de SQLModel.
+    "EXE002", # Faux positif : Windows (plateforme de developpement de ce projet)
+              # n'a pas de bit "executable" Unix ; cette regle n'a pas de sens ici.
+]
+
+[tool.ruff.lint.flake8-bugbear]
+# Depends(...)/exiger_role(...) en valeur par defaut est LE pattern officiel
+# de FastAPI pour l'injection de dependances : ce n'est pas un bug, donc on
+# le declare explicitement comme exception plutot que de desactiver B008
+# partout (voir la doc Ruff + FastAPI a ce sujet).
+extend-immutable-calls = ["fastapi.Depends", "app.auth.exiger_role"]
