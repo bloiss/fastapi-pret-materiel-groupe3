@@ -1,6 +1,7 @@
-from sqlmodel import SQLModel, Field
-from typing import Optional
 from datetime import datetime, timezone
+from typing import Optional
+
+from sqlmodel import Field, SQLModel
 
 
 def now_utc():                                
@@ -19,3 +20,14 @@ class Pret(SQLModel, table=True):
     emprunteur: str
     date_debut: datetime = Field(default_factory=now_utc)
     date_retour: Optional[datetime] = None
+
+# Schemas d'entree separes des tables : un client ne doit jamais pouvoir
+# fournir lui-meme un id, ni se faire passer pour un autre emprunteur.
+class MaterielCreate(SQLModel):
+    reference: str
+    nom: str
+    categorie: str
+
+
+class PretCreate(SQLModel):
+    materiel_id: int
