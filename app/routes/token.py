@@ -6,7 +6,12 @@ from ..auth import authentifier, creer_token
 router = APIRouter()
 
 
-@router.post("/token")
+@router.post(
+    "/token",
+    tags=["Authentification"],
+    summary="Se connecter",
+    description="Verifie l'identifiant et le mot de passe, puis renvoie un jeton JWT valable 30 minutes.",
+)
 def login(form_data: OAuth2PasswordRequestForm = Depends()):
     utilisateur = authentifier(form_data.username, form_data.password)
     if utilisateur is None:
